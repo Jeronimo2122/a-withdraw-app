@@ -8,11 +8,11 @@ import { useRouter } from 'next/navigation'
 
 interface HeaderProps {
   title?: string
-  showBackButton?: boolean
+  showBack?: boolean
   onBack?: () => void
 }
 
-export default function Header({ title = "Worldcoin Withdraw", showBackButton = false, onBack }: HeaderProps) {
+export default function Header({ title = "Worldcoin Withdraw", showBack = false, onBack }: HeaderProps) {
   const { user, isAuthenticated, signOut, isLoading } = useAuth()
   const router = useRouter()
 
@@ -35,7 +35,7 @@ export default function Header({ title = "Worldcoin Withdraw", showBackButton = 
     <header className="bg-white border-b border-gray-200 px-4 py-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          {showBackButton && (
+          {showBack && (
             <Button
               variant="ghost"
               size="sm"
