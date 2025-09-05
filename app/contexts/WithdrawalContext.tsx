@@ -1,8 +1,8 @@
 "use client"
 
 import { createContext, useContext, ReactNode } from "react"
-import { useWithdrawal as useWithdrawalHook } from "../app/hooks/useWithdrawal"
-import { WithdrawalContextType } from "../app/types/withdrawal"
+import { useWithdrawal as useWithdrawalHook } from "../hooks/useWithdrawal"
+import { WithdrawalContextType } from "../types/withdrawal"
 
 const WithdrawalContext = createContext<WithdrawalContextType | undefined>(undefined)
 

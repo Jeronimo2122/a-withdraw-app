@@ -45,6 +45,7 @@ export interface WithdrawalRequest {
   destination: string
   personalData: PersonalData
   userId?: string
+  walletAddress?: string
 }
 
 export interface WithdrawalResponse {

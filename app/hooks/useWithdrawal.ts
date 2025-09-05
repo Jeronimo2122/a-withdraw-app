@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { WithdrawalData, PersonalData, WithdrawalContextType } from '../types/withdrawal'
 import { withdrawalService } from '../services/withdrawalService'
+import { useAuth } from '../contexts/AuthContext'
 
 const defaultWithdrawalData: WithdrawalData = {
   amount: "",
@@ -17,6 +18,7 @@ const defaultWithdrawalData: WithdrawalData = {
 }
 
 export function useWithdrawal(): WithdrawalContextType {
+  const { user } = useAuth()
   const [withdrawalData, setWithdrawalData] = useState<WithdrawalData>(defaultWithdrawalData)
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
@@ -73,7 +75,8 @@ export function useWithdrawal(): WithdrawalContextType {
       const result = await withdrawalService.processWithdrawal({
         amount: parseFloat(withdrawalData.amount),
         destination: withdrawalData.destination,
-        personalData: withdrawalData.personalData
+        personalData: withdrawalData.personalData,
+        walletAddress: user?.walletAddress
       })
 
       if (result.success) {

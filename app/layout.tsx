@@ -1,9 +1,10 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import "./globals.css"
+import "../styles/globals.css"
 import { Toaster } from "@/components/ui/toaster"
 import { MiniKitProvider } from "@worldcoin/minikit-js/minikit-provider"
+import { AuthProvider } from "./contexts/AuthContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <MiniKitProvider>
-        <body className={`${inter.className} h-full overflow-hidden`}>
-          {children}
-          <Toaster />
-        </body>
+        <AuthProvider>
+          <body className={`${inter.className} h-full overflow-hidden`}>
+            {children}
+            <Toaster />
+          </body>
+        </AuthProvider>
       </MiniKitProvider>
     </html>
   )

@@ -25,7 +25,7 @@ export default function WithdrawalApp() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5]">
+    <div className="flex-1 bg-[#F5F5F5]">
       {renderStep()}
     </div>
   )

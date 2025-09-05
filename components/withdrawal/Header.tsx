@@ -1,46 +1,93 @@
-import { X, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
+"use client"
+
+import { useAuth } from '../../app/contexts/AuthContext'
+import { Button } from '../ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { LogOut, User, Wallet } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 interface HeaderProps {
-  title: string
-  showBack?: boolean
+  title?: string
+  showBackButton?: boolean
   onBack?: () => void
-  onClose?: () => void
 }
 
-export default function Header({ title, showBack = false, onBack, onClose }: HeaderProps) {
+export default function Header({ title = "Worldcoin Withdraw", showBackButton = false, onBack }: HeaderProps) {
+  const { user, isAuthenticated, signOut, isLoading } = useAuth()
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/')
+  }
+
+  const getInitials = (username?: string) => {
+    if (!username) return 'U'
+    return username.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+  }
+
+  const formatAddress = (address?: string) => {
+    if (!address) return 'No wallet'
+    return `${address.slice(0, 6)}...${address.slice(-4)}`
+  }
+
   return (
-    <div className="bg-[#2C2C2E] text-white px-4 py-3 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        {showBack && onBack && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onBack}
-            className="text-white hover:bg-white/20 p-2"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        )}
-        <h1 className="text-lg font-semibold">{title}</h1>
-      </div>
-      
-      <div className="flex items-center gap-4">
-        <div className="text-right">
-          <div className="text-sm text-gray-300">Balance</div>
-          <div className="text-lg font-semibold">€ 345,28</div>
+    <header className="bg-white border-b border-gray-200 px-4 py-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          {showBackButton && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="p-2"
+            >
+              ←
+            </Button>
+          )}
+          <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
         </div>
-        {onClose && (
+
+        {isAuthenticated && user ? (
+          <div className="flex items-center space-x-3">
+            {/* User Info Display */}
+            <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
+              <User className="w-4 h-4" />
+              <span className="font-medium">{user.username || 'Usuario'}</span>
+              <Wallet className="w-4 h-4" />
+              <span className="font-mono text-xs">{formatAddress(user.walletAddress)}</span>
+            </div>
+            
+            {/* User Avatar */}
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={user.profilePictureUrl} alt={user.username} />
+              <AvatarFallback className="bg-blue-100 text-blue-600 text-xs">
+                {getInitials(user.username)}
+              </AvatarFallback>
+            </Avatar>
+            
+            {/* Logout Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSignOut}
+              disabled={isLoading}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <LogOut className="w-4 h-4 mr-1" />
+              <span className="hidden sm:inline">Cerrar Sesión</span>
+            </Button>
+          </div>
+        ) : (
           <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="text-white hover:bg-white/20 p-2"
+            variant="outline"
+            size="sm"
+            onClick={() => router.push('/signin')}
           >
-            <X className="h-5 w-5" />
+            Iniciar Sesión
           </Button>
         )}
       </div>
-    </div>
+    </header>
   )
 }
