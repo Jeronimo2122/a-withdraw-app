@@ -1,134 +1,148 @@
-# Character Chat with World ID Verification
+# Worldcoin Withdraw App
 
-Aplicación de chat interactivo con personajes que utiliza World ID para la verificación de identidad.
+Una aplicación de retiros de Worldcoin con un flujo de usuario intuitivo y moderno.
 
 ## 🚀 Características
 
-- Chat interactivo con personajes personalizables  
-- Verificación de identidad mediante World ID  
-- Interfaz de usuario moderna y responsiva  
-- Persistencia de estado de verificación  
-- Soporte para múltiples personajes  
+- **Flujo de 4 pasos**: Amount → Destination → Data → Confirmation
+- **Diseño móvil-first**: Optimizado para dispositivos móviles
+- **Interfaz moderna**: Basada en el diseño de la imagen de referencia
+- **Gestión de estado**: Context API para manejar el estado de la aplicación
+- **Validación de formularios**: Validación en tiempo real
+- **Integración World ID**: Preparado para autenticación con World ID
 
-## 📋 Prerrequisitos
+## 📱 Flujo de la Aplicación
 
-- Node.js (versión 18 o superior)  
-- [pnpm](https://pnpm.io/) instalado globalmente  
-- Cuenta de desarrollador en [World ID](https://developer.worldcoin.org/)  
-- World App instalada en tu dispositivo móvil  
+### 1. Amount Step
+- Ingreso del monto a retirar
+- Teclado numérico personalizado
+- Conversión automática de EUR a USD
+- Validación de monto mínimo
 
-## 🔧 Configuración del Entorno (Primera vez)
+### 2. Destination Step
+- Selección del destino del retiro:
+  - Cuenta bancaria (Hasta 1 día)
+  - Nequi (Instantáneo)
+  - Daviplata (Instantáneo)
+- Interfaz de selección visual
 
-1. **Clonar el repositorio**
-   ```bash
-   git clone [URL_DEL_REPOSITORIO]
-   cd character-chat
-   ```
+### 3. Data Step
+- Formulario de datos personales:
+  - Nombre completo
+  - Fecha de nacimiento
+  - Correo electrónico
+  - Número de celular
+- Validación de campos requeridos
 
-2. **Instalar dependencias**
-   ```bash
-   pnpm install
-   ```
+### 4. Confirmation Step
+- Resumen del retiro
+- Detalles del destino seleccionado
+- Información de procesamiento
+- Confirmación final
 
-3. **Configurar Tailwind CSS (si es necesario)**
-   Si no existen los archivos `tailwind.config.js` y `postcss.config.js`, ejecuta:
-   ```bash
-   pnpm exec tailwindcss init -p
-   ```
-
-4. **Crear archivo de estilos base (si no existe)**
-   ```bash
-   mkdir -p app
-   echo "@tailwind base;\n@tailwind components;\n@tailwind utilities;" > app/globals.css
-   ```
-
-5. **Crear archivo de configuración TypeScript (si no existe)**
-   ```bash
-   npx tsc --init
-   ```
-
-6. **Instalar tipos de Node y React (si hay errores)**
-   ```bash
-   pnpm add -D @types/node @types/react @types/react-dom
-   ```
-
-7. **Configurar variables de entorno**
-   Crear un archivo `.env.local` en la raíz del proyecto con:
-   ```env
-   APP_VERIFY=tu-action-id-de-world-id
-   OPENAI_API_KEY=tu-clave-de-openai
-   ```
-
-8. **Configurar World ID**
-   - Ir a [World ID Developer Portal](https://developer.worldcoin.org/)
-   - Crear una acción con el nombre que pusiste en `APP_VERIFY`
-   - Usar nivel de verificación `Device`
-
-## 🏃‍♂️ Ejecutar la aplicación
-
-1. **Modo desarrollo**
-   ```bash
-   pnpm run dev
-   ```
-
-2. **Abrir la aplicación**
-   Ir a [http://localhost:3000](http://localhost:3000)
-
-## 🔐 Verificación
-
-1. **Primera vez**
-   - Se solicitará verificación de identidad
-   - Abre la World App en tu teléfono y sigue las instrucciones
-
-2. **Verificaciones posteriores**
-   - Se almacenan en localStorage si `persistVerification` está habilitado
-   - Para volver a verificar:
-     - Limpiar localStorage
-     - Llamar `clearVerification()`
-     - Deshabilitar persistencia en el código
-
-## 🛠️ Estructura del Proyecto
+## 🏗️ Arquitectura
 
 ```
-character-chat/
-├── app/
-│   ├── api/
-│   │   └── chat/
-│   │       └── verify/
-│   │           └── route.ts
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── character-settings.tsx
-│   └── ui/
-├── hooks/
-│   └── useWorldIDVerification.ts
-├── lib/
-├── public/
-└── styles/
+app/
+├── page.tsx                 # Página principal con navegación entre pasos
+├── layout.tsx              # Layout principal con providers
+└── globals.css             # Estilos globales
+
+contexts/
+└── WithdrawalContext.tsx   # Context para manejo de estado global
+
+components/
+├── withdrawal/
+│   ├── Header.tsx          # Header compartido
+│   ├── AmountStep.tsx      # Paso 1: Monto
+│   ├── DestinationStep.tsx # Paso 2: Destino
+│   ├── DataStep.tsx        # Paso 3: Datos
+│   └── ConfirmationStep.tsx # Paso 4: Confirmación
+└── ui/                     # Componentes UI reutilizables (shadcn/ui)
 ```
 
-## 📦 Dependencias Principales
+## 🛠️ Tecnologías
 
-- Next.js  
-- React  
-- World ID MiniKit  
-- Tailwind CSS  
-- Shadcn/ui  
-- AI SDK (para integración con OpenAI)
+- **Next.js 14**: Framework de React
+- **TypeScript**: Tipado estático
+- **Tailwind CSS**: Estilos utilitarios
+- **shadcn/ui**: Componentes UI
+- **World ID**: Autenticación (preparado)
+- **Context API**: Gestión de estado
 
-## 🤝 Contribuir
+## 🚀 Instalación
 
-1. Haz fork del proyecto  
-2. Crea una rama (`git checkout -b feature/NuevaFuncion`)  
-3. Realiza cambios y commits (`git commit -m 'Nueva funcion'`)  
-4. Haz push (`git push origin feature/NuevaFuncion`)  
-5. Abre un Pull Request
+1. Instalar dependencias:
+```bash
+pnpm install
+```
 
-## 📝 Licencia
+2. Ejecutar en desarrollo:
+```bash
+pnpm dev
+```
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+3. Abrir en el navegador:
+```
+http://localhost:3000
+```
 
-## 📞 Soporte
+## 📝 Configuración
 
-Para soporte, por favor abre un issue en GitHub o contacta al equipo de desarrollo.
+### Variables de Entorno
+Crear un archivo `.env.local` con:
+```
+# World ID Configuration
+NEXT_PUBLIC_WLD_APP_ID=your_app_id
+NEXT_PUBLIC_WLD_ACTION=withdraw
+```
+
+## 🎨 Diseño
+
+La aplicación está diseñada para replicar exactamente el flujo mostrado en la imagen de referencia:
+
+- **Colores**: Gris oscuro (#2C2C2E) para headers, fondo beige (#F5F5F5)
+- **Tipografía**: Inter font family
+- **Componentes**: Botones redondeados, cards con sombras sutiles
+- **Responsive**: Optimizado para móviles con breakpoints para desktop
+
+## 🔧 Desarrollo
+
+### Estructura de Componentes
+
+Cada paso del flujo es un componente independiente que:
+- Recibe props para navegación (`onNext`, `onBack`)
+- Usa el contexto para acceder y actualizar el estado
+- Implementa validación específica del paso
+- Mantiene consistencia visual con el diseño
+
+### Gestión de Estado
+
+El `WithdrawalContext` maneja:
+- Datos del retiro (monto, destino, datos personales)
+- Funciones para actualizar cada sección
+- Estado persistente durante la navegación
+- Reset del formulario
+
+## 📱 Responsive Design
+
+- **Mobile First**: Diseño optimizado para móviles
+- **Breakpoints**: Adaptación automática a pantallas más grandes
+- **Touch Friendly**: Botones y elementos táctiles apropiados
+- **Keyboard**: Teclado numérico personalizado para entrada de montos
+
+## 🔐 Seguridad
+
+- Validación de formularios en cliente y servidor
+- Sanitización de inputs
+- Preparado para integración con World ID
+- Manejo seguro de datos personales
+
+## 🚀 Próximos Pasos
+
+1. **Integración World ID**: Implementar autenticación real
+2. **API Backend**: Conectar con servicios de retiro
+3. **Validación Server-side**: Validación robusta en el backend
+4. **Testing**: Tests unitarios y de integración
+5. **PWA**: Convertir en Progressive Web App
+6. **Internacionalización**: Soporte multi-idioma

@@ -8,8 +8,8 @@ import { MiniKitProvider } from "@worldcoin/minikit-js/minikit-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Character Chat",
-  description: "Chat with AI characters with unique personalities",
+  title: "Worldcoin Withdraw",
+  description: "Retira tus fondos de Worldcoin de forma segura",
 }
 
 export default function RootLayout({
